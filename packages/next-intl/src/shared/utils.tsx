@@ -110,17 +110,18 @@ function hasTrailingSlash() {
 
 export function normalizeTrailingSlash(pathname: string) {
   const trailingSlash = hasTrailingSlash();
+  const url = new URL(pathname, 'https://example.com');
 
-  if (pathname !== '/') {
-    const pathnameEndsWithSlash = pathname.endsWith('/');
+  if (url.pathname !== '/') {
+    const pathnameEndsWithSlash = url.pathname.endsWith('/');
     if (trailingSlash && !pathnameEndsWithSlash) {
-      pathname += '/';
+      url.pathname += '/';
     } else if (!trailingSlash && pathnameEndsWithSlash) {
-      pathname = pathname.slice(0, -1);
+      url.pathname = url.pathname.slice(0, -1);
     }
   }
 
-  return pathname;
+  return url.pathname + url.search;
 }
 
 export function matchesPathname(
